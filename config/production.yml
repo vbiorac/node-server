@@ -1,0 +1,7 @@
+port: 3005
+commercetools:
+  projectKey: flaschenpost-stage
+  authHost: https://auth.europe-west1.gcp.commercetools.com
+  apiHost: https://api.europe-west1.gcp.commercetools.com
+  clientId: 6jrjIC895GVKIuv6qKcovyqT
+  clientSecret: sEwt9HGuRBpTugV-Tno-w823E6Ar_6N-

@@ -1,0 +1,233 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Node server api",
+    "description": "Node.js API",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:{port}/",
+      "variables": {
+        "port": {
+          "enum": [
+            "3005"
+          ],
+          "default": "3005"
+        }
+      },
+      "description": "Development server"
+    },
+    {
+      "url": "staging server",
+      "description": "Staging server"
+    },
+    {
+      "url": "production server",
+      "description": "Production server"
+    }
+  ],
+  "paths": {
+    "/products/":  {
+      "get": {
+        "summary": "Returns a list of products",
+        "description": "Returns a list of products",
+        "tags": [
+          "Products"
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of product objects",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Product"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error"
+          }
+        }
+      }
+    },
+    "/product/{productId}":  {
+      "get": {
+        "summary": "Returns a product by ID",
+        "description": "Returns a product by ID",
+        "tags": [
+          "Products"
+        ],
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "default": "ae9e3f73-4e0d-4000-bbeb-254c9253fd59"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A product object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Product"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "LocalizedObject": {
+        "properties": {
+          "de-CH": {
+            "type": "string"
+          },
+          "en": {
+            "type": "string"
+          },
+          "fr-CH": {
+            "type": "string"
+          },
+          "it-CH": {
+            "type": "string"
+          }
+        }
+      },
+      "Reference": {
+        "properties": {
+          "typeId": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          }
+        }
+      },
+      "Variant": {
+        "description": "Variant object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "sku": {
+            "type": "string"
+          },
+          "key": {
+            "type": "string"
+          },
+          "prices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Price"
+            }
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Image"
+            }
+          },
+          "attributes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Attribute"
+            }
+          },
+          "availability": {
+            "type": "object"
+          }
+        }
+      },
+      "Product": {
+        "description": "Product object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "number"
+          },
+          "key": {
+            "type": "string"
+          },
+          "name": {
+            "$ref": "#/components/schemas/LocalizedObject"
+          },
+          "categories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Reference"
+            }
+          },
+          "description": {
+            "$ref": "#/components/schemas/LocalizedObject"
+          },
+          "slug": {
+            "$ref": "#/components/schemas/LocalizedObject"
+          },
+          "masterVariant": {
+            "$ref": "#/components/schemas/Variant"
+          },
+          "variants": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Variant"
+            }
+          },
+          "metaDescription": {
+            "$ref": "#/components/schemas/LocalizedObject"
+          },
+          "metaKeywords": {
+            "$ref": "#/components/schemas/LocalizedObject"
+          },
+          "metaTitle": {
+            "$ref": "#/components/schemas/LocalizedObject"
+          },
+          "productType": {
+            "$ref": "#/components/schemas/Reference"
+          }
+        }
+      },
+      "Cart": {},
+      "ProductType": {
+        "properties": {}
+      },
+      "Price": {},
+      "Image": {},
+      "Attribute": {
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "value": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "$ref": "#/components/schemas/LocalizedObject"
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}
