@@ -1,7 +1,7 @@
-import { Schema } from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 import { isEmail } from 'validator';
 
-const AuthorSchema = new Schema({
+export const AuthorSchema = new Schema({
   firstName: String,
   lastName: String,
   email: {
@@ -12,4 +12,7 @@ const AuthorSchema = new Schema({
     validate: [isEmail, 'invalid email'],
   },
 });
-export default AuthorSchema;
+
+const AuthorModel = mongoose.model('Author', AuthorSchema);
+
+export default AuthorModel;

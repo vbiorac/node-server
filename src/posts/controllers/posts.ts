@@ -1,8 +1,7 @@
-import Post from '../models/post';
 import { createPost, getAuthorsByParams, getPostsByParams } from '../services/posts';
 
 const getPosts = async (req : any, res:any) => {
-  const posts: Post[] = await getPostsByParams(req);
+  const posts: any[] = await getPostsByParams(req);
   return res.send(posts);
 };
 const addPost = async (req: any, res: any) => {

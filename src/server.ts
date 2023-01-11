@@ -10,7 +10,7 @@ import PostsRouter from './posts/routes.config';
 import isAuthenticated from './middleware/auth';
 import session from './middleware/session';
 import { errorConverter, errorHandler } from './middleware/errorHandler';
-import Posts from './posts/database/posts';
+import './db/db';
 
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('../docs/swagger.json');
@@ -48,7 +48,4 @@ app.use(errorHandler);
 
 app.listen(configPort, () => {
   console.log(`Server listening on ${configPort}`);
-  Posts.getConnection().then(() => {
-    console.log('Connected to database');
-  });
 });

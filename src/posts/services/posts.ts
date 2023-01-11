@@ -1,45 +1,47 @@
 import mongoose, { Document } from 'mongoose';
-import PostSchema from '../schemas/post';
+import Post from '../models/post';
+import PostModel from '../../db/models/post';
+import AuthorModel from '../../db/models/author';
+import Author from '../models/author';
+import CategoryModel from '../../db/models/category';
 
 const getPostsByParams = async (req: any) => {
-  // await Posts.getConnection();
-  const PostModel = mongoose.model('Posts', PostSchema);
-  const items: any[] = [];
-  await PostModel.collection.find().forEach((item) => {
-    items.push(item);
-    // posts.push(new Post(item));
-  });
-  return items;
+  const items = await PostModel.find({});
+  const posts: Post[] = items.map((item) => new Post(item));
+  return posts;
 };
 
 const createPost = async (req: any) => {
-  const PostModel = mongoose.model('Posts', PostSchema);
   const { body } = req;
+
+  const author : any = new AuthorModel({
+    firstName: body?.author?.firstName ?? '',
+    lastName: body?.author?.lastName ?? '',
+    email: body?.author?.email ?? '',
+  });
+
+  const authorResult = await author.save();
+
+  const category = new CategoryModel({
+    name: body?.category?.name ?? '',
+  });
+  const categoryResult = await category.save();
+
   const post = new PostModel({
-    author: {
-      firstName: body?.author?.firstName ?? '',
-      lastName: body?.author?.lastName ?? '',
-      email: body?.author?.email ?? '',
-    },
-    category: {
-      name: body?.category?.name ?? '',
-    },
-    description: body?.description ?? '',
-    title: body?.title ?? '',
-    year: body?.year ?? '',
+    author: authorResult,
+    category: categoryResult,
+    title: body?.description,
+    description: body?.description,
+    year: body?.year,
   });
   const result: Document | mongoose.Error = await post.save();
   return result;
 };
 
 const getAuthorsByParams = async (req: any) => {
-  const PostModel = mongoose.model('Posts', PostSchema);
-  const items : any[] = [];
-  await PostModel.collection.find().forEach((item) => {
-    items.push(item.author);
-    // authors.push(new Author(item.author));
-  });
-  return items;
+  const items = await AuthorModel.find({});
+  const authors: Author[] = items.map((item) => new Author(item));
+  return authors;
 };
 
 export {

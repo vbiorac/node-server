@@ -7,7 +7,7 @@ class Post {
     this.description = body.description ?? '';
     this.title = body.title ?? '';
     this.year = body.year ?? '';
-    this.comments = Post.mapComments(body);
+    // this.comments = Post.mapComments(body);
   }
 
   comments: Comment[];
